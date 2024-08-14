@@ -12,4 +12,4 @@ const userSchema = new Schema({
 // plugin is used coz it automatically takes username, password , hashing
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

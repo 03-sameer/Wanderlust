@@ -14,14 +14,14 @@ const { renderSignupForm, renderLoginForm, login, logout } = require("../control
 //render signup form
 // signup
 router.route("/signup")
-.get(renderSignupForm)
-.post(wrapAsync(userController.signup));
+.get(userController.renderSignupForm)
+.post(wrapAsync(userController.signup))
 
 //render login form
 //login
 router.route("/login")
-.get(renderLoginForm)
-.post( saveRedirectUrl ,passport.authenticate("local", {failureRedirect: '/login', failureFlash:true }), login);
+.get(userController.renderLoginForm)
+.post( saveRedirectUrl ,passport.authenticate("local", {failureRedirect: `/login`, failureFlash:true }), login);
 
 
 router.get("/logout",logout);

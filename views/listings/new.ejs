@@ -18,32 +18,32 @@
             
         </div>
        
-        <div class="mb-3">
-            <label for="image" class="form-label">image link</label>
-            <input name="listing[image]" placeholder="enter image url/link" type="text" class="form-control">
-        </div>
+
+        <!-- <div class="mb-3">
+            <label for="image" class="form-label">Image link </label>
+            <input name="listing[image]"  type="text" placeholder="Enter image Url/link" class="form-control" required />
+        </div> -->
 
         <div class="mb-3">
             <label for="image" class="form-label">upload image </label>
-            <input name="listing[image]"  type="file" class="form-control">
-            required
+            <input name="listing[image]"  type="file" class="form-control" required />
         </div>
 
 
-<div class="row">
-    <div class="mb-3 col-md-4">
-        <div>
-            <label for="price" class="form-label">Price</label>
-            <input name="listing[price]" placeholder="3000" type="number" class="form-control" required>
-        </div>
+    <div class="row">
+        <div class="mb-3 col-md-4">
+            <div>
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" placeholder="3000" type="number" class="form-control" required>
+            </div>
 
-        <div class="mb-3 col-md-8">
-            <label for="country" class="form-label">Country</label>
-            <input name="listing[country]" placeholder=India" type="text" class="form-control" required>
+            <div class="mb-3 col-md-8">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" placeholder="India" type="text" class="form-control" required>
+            </div>
         </div>
     </div>
-</div>
-    
+        
 
         <div class="mb-3">
             <label for="location" class="form-label">Location</label>
@@ -51,6 +51,28 @@
         </div>
 
         <br><br>
+
+        
+        <div class="mb-3 col-md-5">
+            <div class="dropdown">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="listing[category]" class="form-control" required>
+                    <option disabled selected value>--Select Category--</option>
+                    <option value="Rooms">Rooms</option>
+                    <option value="Mountains">Mountains</option>
+                    <option value="Beach">Beach</option>
+                    <option value="Arctic">Arctic</option>
+                    <option value="Iconic Cities">Iconic Cities</option>
+                    <option value="Farms">Farms</option>
+                    <option value="Camping">Camping</option>
+                    <option value="Castles">Castles</option>
+                    <option value="Deserts">Deserts</option>
+                    <option value="Amazing Pools">Amazing Pools</option>
+                </select>
+            </div>
+          </div>
+
+
 
         <button class="btn btn-dark add-button mt-3"> Add</button>
         <br><br>

@@ -36,11 +36,12 @@ main()
     console.log("connected to DB");
   })
   .catch((err) => {
-    console.log(err);
+    console.log("Database connection error:", err);
   });
 
 async function main() {
   await mongoose.connect(dbUrl);
+  // await mongoose.connect(MONGO_URL);
 }
 
 app.set("view engine", "ejs");
@@ -76,10 +77,6 @@ const sessionOptions = {
   }
 }
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root..................");
-// });
-
 
 
 
@@ -103,42 +100,12 @@ app.use((req, res, next) => {
 })
 
 
-// app.get("/demouser", async(req,res) => {
-//   let fakeUser = new User({
-//     email : "student@gmail.com",
-//     username : "delta-student"
-//   });
 
-//   let refistredUser = await User.register(fakeUser, "helloworld");
-//   res.send(registredUser);
-
-// })
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter );
 
-
-
-// app.get("/listings", async (req,res) =>{
-//   const allListings = await listing.find({});
-//   res.render("index.ejs",{allListings});
-//   });
-
-
-// app.get("/testListing", async (req, res) => {
-//   let sampleListing = new Listing({
-//     title: "My New Villa",
-//     description: "By the beach",
-//     price: 1200,
-//     location: "Calangute, Goa",
-//     country: "India",
-//   });
-
-//   await sampleListing.save();
-//   console.log("sample was saved");
-//   res.send("successful testing");
-// });
 
 
 app.all("*", (req, res, next) =>{
@@ -151,7 +118,7 @@ app.all("*", (req, res, next) =>{
 
 app.use((err,req,res,next) => {
   let{statusCode = 500, message = "something went really wrong!!!"} = err;
-  res.status(statusCode).render("Error.ejs",{message});
+  res.status(statusCode).render("Error.ejs",{err});
   // res.status(statusCode).send(message);
 })
 

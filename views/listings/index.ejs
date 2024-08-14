@@ -1,152 +1,111 @@
 <% layout("/layouts/boilerplate") -%>
 
-    <!-- <h3>All Listings</h3> -->
-    <!-- <form method="GET" action="/listings/new">
-      <button>Create New Listing</button>
-    </form> -->
-
-    <style>
-      #filters{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-
-      .filter{
-      text-align: center;
-      margin-right: 2rem;
-      margin-top: 2rem;
-      opacity: 0.9;
-     }
-
-     .filter:hover{
-      opacity: 1;
-      cursor: pointer;
-     }
-
-     .filter p{
-      font-size: 0.8rem;
-     }
-
-     .tax-info{
-      display: none;
-     }
-
-    .tax-toggle{
-      border: 1px solid black;
-      border-radius: 1rem;
-      height: 3.1rem;
-      padding: 1rem;
-      margin-left: 3rem;
-      display: flex;
-      align-items: center;
-    }
-
-    </style>
-
     
-
-    <div id="filters">
-      <div class="filter">
-        <div><i class="fa-solid fa-fire"></i></div>
-        <p>Trending</p>
+    
+    <div id="filters" class="phone-view">
+      <div class="filters">
+          <%for(filter of filterList){%>
+              <div class="filter" data-category="<%= filter.text %>">
+                  <div><i class="<%= filter.icon %>"></i></div>
+                  <p><%= filter.text %></p>
+              </div>
+          <%}%>
       </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-bed"></i></div>
-        <p>Rooms</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-city"></i></div>
-        <p>Iconic city</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-mountain-sun"></i></div>
-        <p>Mountains</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-brands fa-fort-awesome"></i></div>
-        <p>Castle</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-person-swimming"></i></div>
-        <p>Amazing Pool</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-tent"></i></div>
-        <p>Camping</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-tractor"></i></div>
-        <p>farms</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-snowflake"></i></div>
-        <p>Arctic</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-igloo"></i></div>
-        <p>Igloo</p>
-      </div>
-      <div class="filter">
-        <div><i class="fa-solid fa-ferry"></i></div>
-        <p>Ferry</p>
-      </div>
-
       <div class="tax-toggle">
-        <div class="form-check-reverse form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
-        </div>
+          <div class="form-check-reverse form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+          </div>
       </div>
+  </div>
 
-    </div>
+
 
     <!-- cards boosap -->
-    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
-        <% for(let listing of allListings) { %>
-          <a href="/listings/<%= listing._id %>" class="listing-link">
-        <div class="card col listing-card"  >
-          <img src="<%= listing.image.url %>" 
-          class="card-img-top" 
-          alt="listing_image" 
-          style="height: 20rem;"
-          />
-
-            <div class="card-img-overlay">
-             ChamP
-          </div>
-
-          <div class="card-body">
-            <p class="card-text"> 
-              <b><%= listing.title %> </b> <br>
-              <%= listing.description %> <br>
-               <b>&#8377; <%= listing.price %> </b>
-              
-              <br>
-              <i class="tax-info"> &nbsp; &bbsp; +18% GST</i>
-            </p>
-          </div>
-      </div>
-    </a>
-      <% } %>
-    </div>
+    <div class="row row-cols-lg-5 row-cols-md-2 row-cols-sm-1 mt-3">
+      <%for(let listing of allListings){%>
+              <a href="/listings/<%= listing._id %>" class="listing-link" data-category="<%= listing.category %>">
+                  <div class="card col listing-card">
+                      <img src="<%= listing.image.url %>" class="card-img-top" alt="listing-image">
+                      <div class="card-img-overlay"></div>
+                      <div class="card-body">
+                          <p class="card-text">
+                              <b><%= listing.title %></b>
+                              <br>
+                              &#x20B9;<%= listing.price.toLocaleString("en-IN") %>/ Night
+                              <i class="tax-info"> &nbsp;+18% GST</i>
+                          </p>
+                      </div>
+                  </div>
+              </a>
+          <%}%>
+  </div>
 
 
 
+    
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filters = document.querySelectorAll('.filter');
+        const listings = document.querySelectorAll('.listing-link');
+        const searchInput = document.getElementById('searchInput');
+        console.log(searchInput);
 
-    <script>
-      let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-      taxSwitch.addEventListener("click", () =>{
-        let taxInfo = document.getElementsByClassName("tax-info");
+        function filterListings() {
+        const searchValue = searchInput.value.trim().toLowerCase(); // Get search input value and normalize
+        
+        listings.forEach(listing => {
+            const listingTitle = listing.querySelector('.card-text b').textContent.toLowerCase(); // Get listing title
+            
+            // Show or hide listing based on whether it includes the search value
+            if (listingTitle.includes(searchValue) || searchValue === '') {
+                listing.style.display = 'block'; // Show the listing
+            } else {
+                listing.style.display = 'none'; // Hide the listing
+            }
+        });
+    }
+
+    // Event listener for search input
+    searchInput.addEventListener('input', filterListings);
+
+        filters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                const selectedCategory = this.getAttribute('data-category');
+                
+                if (selectedCategory === 'Trending') {
+                    // Show all listings if 'Trending' filter is clicked
+                    listings.forEach(listing => {
+                        listing.style.display = 'block';
+                    });
+                } else {
+                    // Filter listings based on selected category
+                    listings.forEach(listing => {
+                        const listingCategory = listing.getAttribute('data-category');
+                        if (selectedCategory === 'all' || selectedCategory === listingCategory) {
+                                listing.style.display = 'block'; // Show the listing
+                        } else {
+                            listing.style.display = 'none'; // Hide the listing
+                        }
+                    });
+                }
+            });
+        });
+
+        // Show all listings initially
+        document.querySelector('.filter[data-category="all"]').click();
+    });
+
+    let taxSwitch = document.getElementById('flexSwitchCheckDefault');
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName('tax-info');
         for(info of taxInfo){
-          if(info.style.display != "inline"){
-          info.style.display = "inline";
-        }else{
-          info.style.display = "inline";
+            if(info.style.display != "inline"){
+                info.style.display = "inline";
+            }else{
+               info.style.display = "none";
+            }
         }
-        }
-      });
-    </script>
 
-
-
+    })
+</script>
